@@ -1,0 +1,59 @@
+BiblioSpec 2.0
+
+Installation Instructions
+
+These instructions are for building the BiblioSpec tools from the download
+package bibliospec-2.0.X.tgz where X is the specific revision number.  Check 
+the website for pre-built tools for your platform before deciding to build 
+from scratch.  First unpack the file into any directory.  
+
+  tar -zxf bibliospec-2.0.X.tgz
+
+These instructions will refer to this directory as BLIB_ROOT.
+
+Building in Linux -----------------------------------------------------------
+
+You will need the build tools 'make' and 'gcc', which are commonly installed
+on many Linux distributions.  You will also need the Proteowizard library,
+which can be downloaded from the BiblioSpec website.  Begin by creating a 
+directory for proteowizard and unpacking it.
+
+  tar -jxf pwiz-src-without-tv-2_1_2324.tar.bz2 
+
+Build and install Proteowizard into the BiblioSpec directory structure in one
+step
+ 
+  ./quickbuild.sh libraries --prefix=BLIB_ROOT/src/extern/proteowizard/install
+
+Confirm that the build was successful by looking for the archive files in
+BLIB_ROOT/src/extern/proteowizard/install/lib/.  Note that the boost libraries
+include the name of the toolset used to build them.  If these do not match
+the names in the makefile, you will have to update it.  For example, if you see
+
+  BLIB_ROOT/src/extern/proteowizard/install/lib/libboost_filesystem-gcc43-mt-s.a
+
+you will need to edit the file BLIB_ROOT/src/c/makefile.  Look for 
+'-lboost_filesystem-gcc44-mt-s' and change '44' to '43'.
+
+Next, navigate to the directory BLIB_ROOT/src/c and build with the command
+
+  make
+
+Once it has finished, the executables will be in BLIB_ROOT/bin/.  You can run 
+them from there or move them to some location in your $PATH.
+
+Building in Windows ---------------------------------------------------------
+
+BiblioSpec is built in Windows using Visual Studio 2010.  It may or may not
+be compatible with older versions.  First you must unpack the files in
+BLIB_ROOT/src/extern/program-options/boost_1_43_0.tgz.  If you have Cygwin
+installed, you can use the tar utility
+  
+  cd BLIB_ROOT/src/extern/program-options/
+  tar -zxf boost_1_43_0.tgz
+
+Or you can use another program such as 7-Zip to unpack it.
+
+Open the BiblioSpec.sln file in Visual Studio and build the solution.  The
+executable files will be located in BLIB_ROOT/bin/Release or 
+BLIB_ROOT/bin/Debug, depending on the configuration.

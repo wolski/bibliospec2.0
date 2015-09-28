@@ -1,0 +1,164 @@
+# FILE: makefile
+# DATE: March 30, 2009
+# AUTHOR: Barbara Frewen
+
+ifndef _ARCH
+  _ARCH = $(shell /bin/uname -m)
+  ifeq ($(_ARCH),i686)
+     _ARCH = i386
+  endif
+  export _ARCH
+endif
+
+
+CC	= g++
+DEBUG	= -g 
+#DEBUG	= -g -pg
+#OFLAGS	= 
+CFLAGS_x86_64 = -m64 -D__LINUX64__
+CFLAGS_i386   = -m32 -D__LINUX__
+PTHREAD_i386  = -lpthread
+PTHREAD_x86_64 = -pthread
+CFLAGS	= $(INCLUDE_DIRS) -Wall -Werror -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $(CFLAGS_$(_ARCH))
+INCLUDE_DIRS = -I../extern/zlib -I../extern/mascot-parser/include -I${BOOSTDIR}/include -I${EXPATDIR}/lib -I../../src/extern/proteowizard/install/include -I../extern/sqlite
+LDFLAGS = -L../extern/mascot-parser/lib/$(_ARCH) -L../extern/proteowizard/install/lib -L../extern/sqlite -lmsparser $(PTHREAD_$(_ARCH)) -lsqlite3 -ldl ../extern/expat-2.0.1/.libs/libexpat.a $(BPOLIB) \
+  -lpwiz_data_msdata \
+  -lpwiz_data_common \
+  -lpwiz_data_msdata_version \
+  -lpwiz_data_misc \
+  -lpwiz_utility_misc \
+  -lpwiz_utility_minimxml \
+  -lboost_system-gcc43-mt-s \
+  -lboost_iostreams-gcc43-mt-s \
+  -lz-gcc43-mt-s-1_2  \
+  -lboost_filesystem-gcc43-mt-s \
+  -lboost_regex-gcc43-mt-s \
+  -lboost_thread-gcc43-mt-s -lpthread
+
+
+# File locations
+BINDIR = ../../bin
+OBJDIR = objs
+LIBDIR = libs
+EXPATDIR = ../extern/expat-2.0.1
+BOOSTDIR = ../extern/program-options
+
+# Archive files
+LIBFILE	= ${LIBDIR}/libblib.a
+RANLIBFILE = ${LIBDIR}/libblib.ranlib
+EXPATLIB = $(EXPATDIR)/.libs/libexpat.a
+BPOLIB = ${BOOSTDIR}/lib/libboost_program_options.a
+
+# Libraries to use
+LIBS	= ${LIBFILE} ${EXPATLIB} ${BPOLIB}
+
+# Objects to compile into the library
+LIBOBJS	=\
+	${OBJDIR}/BlibUtils.o \
+	${OBJDIR}/Options.o \
+	${OBJDIR}/Verbosity.o \
+	${OBJDIR}/SqliteRoutine.o \
+	${OBJDIR}/SearchLibrary.o \
+	${OBJDIR}/RefSpectrum.o \
+	${OBJDIR}/Reportfile.o \
+	${OBJDIR}/LibReader.o \
+	${OBJDIR}/PeakProcess.o \
+	${OBJDIR}/DotProduct.o \
+	${OBJDIR}/Match.o \
+	${OBJDIR}/SQTreader.o \
+	${OBJDIR}/saxhandler.o \
+	${OBJDIR}/AminoAcidMasses.o \
+	${OBJDIR}/PepXMLreader.o \
+	${OBJDIR}/BlibMaker.o \
+	${OBJDIR}/BlibBuilder.o \
+	${OBJDIR}/IdpXMLreader.o \
+	${OBJDIR}/BuildParser.o \
+	${OBJDIR}/MascotResultsReader.o \
+	${OBJDIR}/TandemNativeParser.o \
+	${OBJDIR}/CommandLine.o \
+	${OBJDIR}/WeibullPvalue.o \
+	${OBJDIR}/PsmFile.o \
+	${OBJDIR}/Spectrum.o \
+	${OBJDIR}/ProteinPilotReader.o \
+        ${OBJDIR}/SslReader.o \
+	${OBJDIR}/PwizReader.o
+#	${OBJDIR}/
+
+HEADERS = \
+	SpecFileReader.h 
+
+# Programs to build
+APPS	= \
+	${BINDIR}/BlibSearch \
+	${BINDIR}/BlibBuild \
+	${BINDIR}/BlibFilter \
+        ${BINDIR}/BlibToMs2
+
+# Override implicit rules
+%.o:: %.cpp
+
+%:: %.cpp
+
+# High-level rules
+
+all: expat libs bpo apps converter 
+
+libs: ${LIBOBJS}
+
+apps: ${APPS} libs 
+
+converter: ${BINDIR}/LibToSqlite3 
+
+${APPS}: ${LIBFILE} ${HEADERS}
+
+${LIBFILE}: ${LIBOBJS}
+
+
+# To build expat
+expat: $(EXPATLIB)
+
+$(EXPATLIB): $(EXPATDIR)/expat_config.h
+	@cd $(EXPATDIR); ./configure; make
+
+$(EXPATDIR)/expat_config.h:
+	@cd $(EXPATDIR); ./configure
+
+# To build boost program options
+bpo: $(BPOLIB)
+
+$(BPOLIB):
+	@cd ${BOOSTDIR}; make
+
+# Dependencies
+# Undefine built-in rules, esp those that remove .o files
+# I think must have blank line in between each for them to work
+#(%): %
+#(%.o): %.o
+#(%.o): %.cpp
+%.o: %.cpp
+
+%: %.o
+
+%: %.cpp
+
+# Rule for building cpp files into .o files
+${OBJDIR}/%.o:	%.cpp
+	@mkdir -p ${OBJDIR}
+	$(CC) $(DEBUG) $(CFLAGS) -c -o ${OBJDIR}/$*.o $<
+	@mkdir -p ${LIBDIR}
+	ar r ${LIBDIR}/libblib.a $@
+
+# Rule for compiling programs
+${BINDIR}/%: ${LIBFILE} %.cpp 
+	@mkdir -p ${BINDIR}
+	${CC} $(DEBUG) $(CFLAGS) -o ${BINDIR}/$* $*.cpp ${INCLUDE_DIRS} ${LIBS} ${LDFLAGS}
+
+# Punt for building old version to new version converter and avoiding namespace conflicts in the static lib
+${BINDIR}/LibToSqlite3: 
+	${CC} original-Library.cpp original-LibIterator.cpp original-Spectrum.cpp original-RefSpectrum.cpp original-Ms2file.cpp original-RefFile.cpp original-ProcessedPeaks.cpp original-Modifications.cpp LibToSqlite3.cpp -O3 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 ${INCLUDE_DIRS} ${LDFLAGS} -o ${BINDIR}/LibToSqlite3
+
+weibull:
+	g++ -I../extern/program-options/include TestWeibull.cpp WeibullPvalue.cpp BlibUtils.cpp CommandLine.cpp ../extern/program-options/lib/libboost_program_options.a -o test-weibull
+
+clean: 
+	@rm -rf ${OBJDIR} ${LIBDIR} ${BINDIR}

@@ -1,0 +1,59 @@
+How to install Proteowizard for BiblioSpec on Linux
+
+1. Check out the proteowizard project anywhere.
+
+$ svn checkout https://proteowizard.svn.sourceforge.net/svnroot/proteowizard/trunk/pwiz .
+
+2. Build proteowizard using the quickbuild.sh script.
+
+3. Install the libraries and header files with this command
+
+$ ./quickbuild.sh libraries --prefix=<path to blib root>/src/extern/proteowizard/install
+
+That should place libraries in install/lib and headers in install/include.  The critical
+libraries are the following:
+
+libboost_filesystem-gcc44-mt-s.a
+libboost_iostreams-gcc44-mt-s.a
+libboost_regex-gcc44-mt-s.a
+libboost_system-gcc44-mt-s.a
+libboost_thread-gcc44-mt-s.a
+libpwiz_data_common.a
+libpwiz_data_misc.a
+libpwiz_data_msdata.a
+libpwiz_data_msdata_version.a
+libpwiz_utility_minimxml.a
+libpwiz_utility_misc.a
+libz-gcc44-mt-s-1_2.a
+
+*NOTE that 'gcc44' will be replaced with whatever compiler version you 
+are using.
+
+4. Update <bibliospec>/src/c/makefile to have the correct names of the boost 
+libaries.  For example, replace 'gcc44' with the compiler version on your 
+system.  Until the pwiz install feature strips the toolset version from the
+library names, the makefile may have to be altered to link to the correct 
+library names.
+
+How to install Proteowizard for BiblioSpec on Windows
+
+The pre-built libraries are stored in the SVN repository, so nothing need be 
+done until you need tu update the version of proteowizard being used.  In that
+case...
+
+1. Check out the proteowizard project anywhere.
+
+2. Build proteowizard in DOS window using the quickbuild.bat script and the 
+debug option.
+
+3. Install the libraries and header files with this command
+
+$ quickbuild.bat libraries --libdir=<path to blib>\win\lib --includedir=<path to blib>\src\extern\proteowizard\install\include
+
+4. Rename the libpwiz_* libraries so that they end with -gd.lib, indicating 
+they are the debug versions.
+
+5. Build proteowizard again, this time in release mode.
+
+6. Repeat the install step (3).  This time there is no need to rename the 
+libraries.

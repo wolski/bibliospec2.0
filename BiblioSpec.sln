@@ -1,0 +1,49 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlibBuild", "BlibBuild.vcproj", "{B86FF951-27C3-481E-81A3-13F2F537F84E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlibFilter", "BlibFilter.vcproj", "{A4482F6B-8734-4925-A0CF-B37A629FCE2B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlibSearch", "BlibSearch.vcproj", "{5A8B3F38-87EE-4547-A364-809780521EA6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlibLib", "BlibLib.vcproj", "{B20F4A40-5C13-4B4F-BD18-E4C4FDE3C3F2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibToSqlite3", "LibToSqlite3.vcproj", "{463BCE02-D6C6-4D1B-AA95-E924BBC82BC1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlibToMs2", "BlibToMs2.vcproj", "{612FB93A-1745-48D0-9F1C-32CDD6BF539B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B86FF951-27C3-481E-81A3-13F2F537F84E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B86FF951-27C3-481E-81A3-13F2F537F84E}.Debug|Win32.Build.0 = Debug|Win32
+		{B86FF951-27C3-481E-81A3-13F2F537F84E}.Release|Win32.ActiveCfg = Release|Win32
+		{B86FF951-27C3-481E-81A3-13F2F537F84E}.Release|Win32.Build.0 = Release|Win32
+		{A4482F6B-8734-4925-A0CF-B37A629FCE2B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A4482F6B-8734-4925-A0CF-B37A629FCE2B}.Debug|Win32.Build.0 = Debug|Win32
+		{A4482F6B-8734-4925-A0CF-B37A629FCE2B}.Release|Win32.ActiveCfg = Release|Win32
+		{A4482F6B-8734-4925-A0CF-B37A629FCE2B}.Release|Win32.Build.0 = Release|Win32
+		{5A8B3F38-87EE-4547-A364-809780521EA6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5A8B3F38-87EE-4547-A364-809780521EA6}.Debug|Win32.Build.0 = Debug|Win32
+		{5A8B3F38-87EE-4547-A364-809780521EA6}.Release|Win32.ActiveCfg = Release|Win32
+		{5A8B3F38-87EE-4547-A364-809780521EA6}.Release|Win32.Build.0 = Release|Win32
+		{B20F4A40-5C13-4B4F-BD18-E4C4FDE3C3F2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B20F4A40-5C13-4B4F-BD18-E4C4FDE3C3F2}.Debug|Win32.Build.0 = Debug|Win32
+		{B20F4A40-5C13-4B4F-BD18-E4C4FDE3C3F2}.Release|Win32.ActiveCfg = Release|Win32
+		{B20F4A40-5C13-4B4F-BD18-E4C4FDE3C3F2}.Release|Win32.Build.0 = Release|Win32
+		{463BCE02-D6C6-4D1B-AA95-E924BBC82BC1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{463BCE02-D6C6-4D1B-AA95-E924BBC82BC1}.Debug|Win32.Build.0 = Debug|Win32
+		{463BCE02-D6C6-4D1B-AA95-E924BBC82BC1}.Release|Win32.ActiveCfg = Release|Win32
+		{463BCE02-D6C6-4D1B-AA95-E924BBC82BC1}.Release|Win32.Build.0 = Release|Win32
+		{612FB93A-1745-48D0-9F1C-32CDD6BF539B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{612FB93A-1745-48D0-9F1C-32CDD6BF539B}.Debug|Win32.Build.0 = Debug|Win32
+		{612FB93A-1745-48D0-9F1C-32CDD6BF539B}.Release|Win32.ActiveCfg = Release|Win32
+		{612FB93A-1745-48D0-9F1C-32CDD6BF539B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
